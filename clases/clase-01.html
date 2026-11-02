@@ -54,8 +54,118 @@
         </section>
 
         <section>
-            <h2>¿Qué es ROS2?</h2>
+            <h3>¿Qué es ROS2?</h3>
             <p>ROS 2 (Robot Operating System 2) es una capa de software que corre sobre Linux o windows, utilizando el middleware DDS como base para la comunicación entre procesos.</p>
+            <p>ROS 2 funciona como el "sistema nervioso" de un robot. Permite que los diferentes componentes de la máquina (como cámaras, sensores, motores, unidades de procesamiento y algoritmos de inteligencia artificial) se comuniquen entre sí de forma rápida y ordenada.</p>
+        </section>
+
+        <section>
+            <h3>Ecosistema ROS 2</h3>
+            <ul>
+                <li>Paquetes (packages): Componentes de software reutilizables que contienen nodos, configuraciones, interfaces, etc.</li>
+                <li>Nodos (nodes): Programas individuales que se comunican entre sí.</li>
+                <li>Topics: Canales para mensajes unidireccionales y asíncronos.</li>
+                <li>Services: Para llamadas sincrónicas tipo request-response.</li>
+                <li>Actions: Para tareas que pueden tomar tiempo y requieren feedback (como mover un brazo).</li>
+                <li>Launch files (Python): Permiten iniciar múltiples nodos con configuraciones específicas.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Instalación de Ubuntu</h3>
+            <p>Para el funcionamiento de ROS2 es necesario instalar Ubuntu. En este curso trabajaremos con Ubuntu 22.04 y ROS Humble.</p>
+
+            <p></p>Link para instalacion en Dual-Boot: <a href="https://youtu.be/wIj7sHK0SkQ">Dual-Boot</a></p>
+        </section>
+
+        <section>
+            <h3>Comandos básicos de Linux</h3>
+            <ul>
+                <li><code>ls</code>: Listar archivos y directorios.</li>
+                <li><code>cd</code>: Cambiar de directorio.</li>
+                <code>cd /home/ # te lleva al directorio Home.</code>
+
+                <li><code>pwd</code>: Mostrar el directorio actual.</li>
+                <li><code>mkdir</code>: Crear un nuevo directorio.</li>
+                <code>mkdir nuevo_directorio</code>
+
+                <li><code>rm</code>: Eliminar archivos o directorios.</li>
+                <code>rm archivo.txt # elimina el archivo archivo.txt.</code>
+                <code> rm -r carpeta # elimina una carpeta y su contenido.</code>
+
+                <li><code>mv</code>: Mover o renombrar archivos o directorios.</li>
+                <code>mv archivo.txt /ruta/destino/ # mueve archivo.txt a la ruta especificada.</code>
+                <code>mv archivo.txt nuevo_nombre.txt # renombra archivo.txt a nuevo_nombre.txt.</code>
+
+                <li><code>touch</code>: Crear un nuevo archivo.</li>
+                <code>touch nuevo_archivo.txt</code>
+
+                <li><code>ifconfig</code>: Mostrar la configuración de red.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Instalacion de aplicaciones necesarias</h3>
+            <p>Desde la app Center buscar "Terminator" filtrando por "Debian packages"</p>
+            <img src="clase1/Terminator.png" alt="Terminator">
+            <p> Para instalar Visual Studio Code</p>
+            <a href="https://code.visualstudio.com/docs/setup/linux/" target="_blank">Visual Studio Code</a>
+            <ul>
+                <li>Descargar el paquete <a href="https://go.microsoft.com/fwlink/?LinkID=760868" target="_blank">.deb</a></li>
+                <li>Instalarlo con el comando: <code>sudo apt install ./<nombre_del_paquete>.deb</code></li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Instalación de ROS2 Humble</h3>
+            <p>Pagina oficial de <a href="https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html" target="_blank">ROS2 Humble</a></p>
+            <p>Para instalar ROS2 Humble, sigue los pasos oficiales de la documentación:</p>
+            <ul>
+                <li>Fuentes de configuración</li>
+                    <p>Añadir el repositorio ROS2 apt a su sistema.</p>
+                    <p>Primero asegúdese de que el repositorio de Ubuntu Universe esté habilitado.</p>
+                    <p><code>sudo apt install software-properties-common</code></p>
+                    <p><code>sudo add-apt-repository universe</code></p>
+                
+                <li>Configurar los repositorios de Ubuntu</li>
+                    <p>ROS 2 depende de algunas herramientas adicionales. Primero, debe asegurarse de que su sistema esté completamente actualizado y tenga las herramientas necesarias.</p>
+                    <p><code>sudo apt update && sudo apt install curl -y</code></p>
+
+                <li>Agregar el repositorio de ROS 2 a su lista de fuentes</li>
+                    <p><code>export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')</code>
+                    <p><code>curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"</code>
+                    <p><code>sudo dpkg -i /tmp/ros2-apt-source.deb</code>
+                
+                <li>Instalar ROS 2 Humble</li>
+                    <p>Actualizar el indice de contenidos</p>
+                    <p><code>sudo apt update</code></p>
+                    <p>Actualizar el sistema</p>
+                    <p><code>sudo apt upgrade</code></p>
+                    <p>Instalar ROS 2 Humble</p>
+                    <p><code>sudo apt install ros-humble-desktop</code></p>
+
+                <li>Herramientas adicionales</li>
+                    <p><code>sudo apt install python3-colcon-common-extensions</code></p>
+                    <p><code>sudo apt install ros-dev-tools</code></p>
+
+                <li>Configurar el entorno de ROS 2</li>
+                    <p>Para que ROS 2 funcione correctamente, debes agregar su entorno a tu terminal. Esto lo puedes hacer editando el archivo ~/.bashrc o ejecutando este comando en cada nueva terminal que abras:</p>
+                    <p>bash</p>
+                    <p><code>source /opt/ros/humble/setup.bash</code></p>
+                    <p>Para que este cambio sea permanente, agrega la línea anterior al final de tu archivo ~/.bashrc:</p>
+                    <p><code>echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc</code></p>
+                    <p>Luego, para aplicar los cambios, ejecuta:</p>
+                    <p><code>source ~/.bashrc</code></p>
+
+                <li>Verificar la instalación de ROS 2</li>
+                <p>Para asegurarte de que ROS 2 se instaló correctamente, puedes intentar correr un nodo de prueba. Primero, abre una terminal nueva y ejecuta:</p>
+                <p>Luego, inicia una instancia del nodo talker (publicador):</p>
+                <p><code>ros2 run demo_nodes_cpp talker</code></p>
+                <p>En otra terminal, inicia una instancia del nodo listener (suscriptor):</p>
+                <p><code>ros2 run demo_nodes_cpp listener</code></p>
+                <p>Si todo está funcionando correctamente, deberías ver mensajes siendo publicados y recibidos entre los dos nodos.</p>
+
+            </ul>
         </section>
 
         <!-- Botones de navegación rápida entre clases -->
@@ -64,6 +174,7 @@
             <a href="" class="btn-secondary">Siguiente Clase →</a>
         </div>
     </main>
+
 
     <footer>
         <p>&copy; 2026 - Curso de Navegación Urbana Autónoma</p>
