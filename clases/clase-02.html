@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase 1 - Curso de Navegación Autónoma</title>
+    <title>Clase 2 - Curso de Navegación Autónoma</title>
     <!-- Nota el uso de '../' para salir de la carpeta clases y encontrar el CSS -->
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
-    <!-- Barra de Navegación (Misma estructura, ajustando rutas con '../') -->
+    <!-- Barra de Navegación -->
     <header>
         <nav class="navbar">
             <div class="logo">
-                <a href="../index.html">🚗 Curso ROS 2 & Nav</a>
+                <a href="../index.html">🚗 Curso ROS 2 & Rviz</a>
             </div>
             <ul class="nav-links">
                 <li><a href="../index.html">Inicio</a></li>
@@ -21,17 +21,17 @@
                     <a href="#" class="dropbtn">Clases ▾</a>
                     <div class="dropdown-content">
                         <a href="clase-01.html">Clase 1: Introducción a ROS 2</a>
-                        <a href="clase-02.html">Clase 2: Configuración del entorno</a>
-                        <a href="clase-03.html">Clase 3: Nodos y Tópicos</a>
-                        <a href="clase-04.html">Clase 4: URDF y Modelado</a>
-                        <a href="clase-05.html">Clase 5: Simulación en Gazebo</a>
-                        <a href="clase-06.html">Clase 6: Sensores e IMU</a>
-                        <a href="clase-07.html">Clase 7: Odometría y Cinemática</a>
-                        <a href="clase-08.html">Clase 8: Mapeo (SLAM)</a>
-                        <a href="clase-09.html">Clase 9: Localización (AMCL)</a>
-                        <a href="clase-10.html">Clase 10: Navegación Autónoma (Nav2)</a>
-                        <a href="clase-11.html">Clase 11: Planificación de Conductas</a>
-                        <a href="clase-12.html">Clase 12: Proyecto Final</a>
+                        <a href="clase-02.html">Clase 2: Control de Servos en ESP32</a>
+                        <a href="clase-03.html">Clase 3: Puente Serial ESP32 ROS 2</a>
+                        <a href="clase-04.html">Clase 4: Fundamentos Matemáticos (FK/IK)</a>
+                        <a href="clase-05.html">Clase 5: URDF del Manipulador R-R-R</a>
+                        <a href="clase-06.html">Clase 6: Cinemática Directa y RViz2</a>
+                        <a href="clase-07.html">Clase 7: Cinemática Inversa en Python</a>
+                        <a href="clase-08.html">Clase 8: Introducción a micro-ROS</a>
+                        <a href="clase-09.html">Clase 9: Suscripción a /joint_states</a>
+                        <a href="clase-10.html">Clase 10: Red Multidispositivo (2 ESP32)</a>
+                        <a href="clase-11.html">Clase 11: GUI en Python (CustomTkinter)</a>
+                        <a href="clase-12.html">Clase 12: Proyecto Final (Pick & Place)</a>
                     </div>
                 </li>
             </ul>
@@ -40,26 +40,118 @@
 
     <!-- Contenido de la clase -->
     <main class="container class-content">
-        <h1>Clase 2: Configuración del entorno</h1>
+        
+        <!-- Botón de retroceso hacia la página home -->
+        <div style="margin-bottom: 1.5rem;">
+            <a href="../index.html" class="btn-secondary">← Volver al Inicio</a>
+        </div>
+
+        <h1>Clase 2: Control de Servomotores en ESP32</h1>
         <hr>
         
         <section>
             <h2>Objetivos de la clase</h2>
-            <p>Aquí irá el contenido que tú decidas agregar luego (teoría, explicaciones, comandos, bloques de código, etc.).</p>
+            <ul>
+                <li>Programación C++ en ESP32 para el manejo de hardware.</li>
+                <li>Generación de señales PWM orientadas al control de servomotores (Articulaciones).</li>
+                <li>Lectura y escritura de datos por puerto Serial entre el ESP32 y Python utilizando <code>pyserial</code></li>
+                <li>Lectura de un sensor de presencia (ultrasonido o infrarrojo)</li>
+            </ul>
         </section>
 
         <section>
-            <h2>Materiales y Enlaces</h2>
+            <h3>1. Conexión y Consideraciones del ESP32</h3>
+            <p>El ESP32 trabaja a 3.3V en sus pines GPIO, por lo que es importante alimentar los servomotores (como los SG90) desde una fuente externa de 5V adecuada, compartiendo la tierra (GND) común para evitar ruido eléctrico o reinicios en el microcontrolador.</p>
             <ul>
-                <li>Presentación en PDF</li>
-                <li>Código fuente de ejemplo</li>
+                <li><strong>PWM en ESP32:</strong> A diferencia de Arduino Uno, el ESP32 utiliza la librería <code>ESP32Servo</code> o canales LEDC configurables para generar los pulsos de control (frecuencia estándar de 50Hz para servos).</li>
             </ul>
+        </section>
+
+        <section>
+            <h3>2. Código C++ para ESP32 (Control de Servos + Sensor)</h3>
+            <p>Este código configura el servomotor y lee de manera concurrente un sensor ultrasónico, enviando la información por el puerto Serial.</p>
+            <div class="terminal-block">
+<pre><code>#include &lt;Servo.h&gt;
+
+Servo myservo;  // Crear objeto servo
+const int trigPin = 5;
+const int echoPin = 18;
+const int servoPin = 13;
+
+void setup() {
+  Serial.begin(115200);
+  myservo.attach(servoPin);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  // 1. Lectura del sensor ultrasónico
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  long duration = pulseIn(echoPin, HIGH);
+  float distance = duration * 0.034 / 2; // Distancia en cm
+
+  // Enviar datos por serial hacia la PC
+  Serial.print("Distancia:");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // 2. Leer comandos entrantes desde Python por Serial
+  if (Serial.available() > 0) {
+    int angle = Serial.parseInt(); // Leer ángulo enviado
+    if (angle >= 0 && angle <= 180) {
+      myservo.write(angle);
+    }
+  }
+  delay(100);
+}</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h3>3. Comunicación Serial con Python (<code>pyserial</code>)</h3>
+            <p>Para comunicar nuestro script de Python con el ESP32 y enviar consignas de posición o recibir la distancia del sensor, utilizamos la librería <code>pyserial</code>.</p>
+            <p>Instalación previa en tu entorno de desarrollo:</p>
+            <div class="terminal-block">pip install pyserial</div>
+
+            <p>Ejemplo de script en Python:</p>
+            <div class="terminal-block">
+<pre><code>import serial
+import time
+
+# Configurar el puerto serial (ajustar '/dev/ttyUSB0' o 'COM3' según corresponda)
+arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, timeout=.1)
+
+def enviar_angulo(angulo):
+    arduino.write(f"{angulo}\n".encode())
+    time.sleep(0.05)
+
+try:
+    while True:
+        # Enviar un ángulo de prueba
+        enviar_angulo(90)
+        
+        # Leer respuesta del ESP32
+        data = arduino.readline().decode('utf-8').strip()
+        if data:
+            print(f"Recibido del ESP32: {data}")
+            
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Comunicación finalizada.")
+</code></pre>
+            </div>
         </section>
 
         <!-- Botones de navegación rápida entre clases -->
         <div class="class-navigation">
-            <span></span> <!-- Espaciador si no hay anterior -->
-            <a href="clase-01.html" class="btn-secondary">Siguiente Clase →</a>
+            <a href="clase-01.html" class="btn-secondary">← Clase Anterior</a>
+            <a href="clase-03.html" class="btn-secondary">Siguiente Clase →</a>
         </div>
     </main>
 

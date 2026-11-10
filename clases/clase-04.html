@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 4 - Fundamentos Matemáticos (FK/IK)</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="../index.html">🚗 Curso ROS 2 & Rviz</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Clases ▾</a>
+                    <div class="dropdown-content">
+                        <a href="clase-01.html">Clase 1: Introducción a ROS 2</a>
+                        <a href="clase-02.html">Clase 2: Control de Servos en ESP32</a>
+                        <a href="clase-03.html">Clase 3: Puente Serial ESP32 ↔ ROS 2</a>
+                        <a href="clase-04.html">Clase 4: Fundamentos Matemáticos (FK/IK)</a>
+                        <a href="clase-05.html">Clase 5: URDF del Manipulador R-R-R</a>
+                        <a href="clase-06.html">Clase 6: Cinemática Directa y RViz2</a>
+                        <a href="clase-07.html">Clase 7: Cinemática Inversa en Python</a>
+                        <a href="clase-08.html">Clase 8: Introducción a micro-ROS</a>
+                        <a href="clase-09.html">Clase 9: Suscripción a /joint_states</a>
+                        <a href="clase-10.html">Clase 10: Red Multidispositivo (2 ESP32)</a>
+                        <a href="clase-11.html">Clase 11: GUI en Python (CustomTkinter)</a>
+                        <a href="clase-12.html">Clase 12: Proyecto Final (Pick & Place)</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container class-content">
+
+        <div>
+            <a href="../index.html" class="btn-secondary">← Volver al Inicio</a>
+        </div>
+
+        <h1>Clase 4 - Fundamentos Matemáticos (FK/IK)</h1>
+        <hr>
+
+        <section>
+            <h2>Objetivos de la clase</h2>
+            <ul>
+                <li>Entender los conceptos de cinemática directа e inversа.</li>
+                <li>Implementar cálculos de FK y IK en Python.</li>
+                <li>Aplicar estos conceptos para controlar un manipulador robótico.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Armado del robot</h3>
+            <p>Para el armado del robot puedes seguri la guia oficial <a href="https://shop.mearm.com/pages/building-the-mearm-robotic-arm-version-1-and-below" target="_blank">pagina oficial</a></p>
+        </section>
+
+
+        <section>
+            <h3>Posición de home del robot</h3>
+            <p>La posición de home del robot es la posición inicial desde donde se inicia el movimiento. Para este caso tomamos el punto en contacto con el suelo con el eje X apuntando hacia adelante, eje Y apuntando hacia la izquierda y eje Z apuntando hacia arriba.</p>
+            <img src="clase4/robot_axis.png" alt="Posición de home del robot">
+
+            <p>Para lograr esa posicion tenemos los 4 servos con las siguientes disposiciones</p>
+            <ul>
+                <li>Servo q1: 90°</li>
+                <li>Servo q2: 90°</li>
+                <li>Servo q3: 90°</li>
+                <li>Servo q4: 0°</li>
+            </ul>
+
+            <p>La articulación q1 mueve la base del robot sobre el eje Z.</p>
+            <img src="clase4/q1.png" alt="Movimiento del servo q1">
+
+            <p>La articulación q2 es el hombro del robot y mueve el brazo.</p>
+            <img src="clase4/q2.png" alt="Movimiento del servo q2">
+
+            <p>La articulación q3 es el codo del robot, mueve el antebrazo mediante un mecanismo de 4 barras.</p>
+            <img src="clase4/q3.png" alt="Movimiento del servo q3">
+            <img src="clase4/cuatro_barras.png" alt="Mecanismo de 4 barras">
+
+            <p>La articulación q4 es la muñeca del robot, mueve la garra.</p>
+            <img src="clase4/q4.png" alt="Movimiento del servo q4">
+        </section>
+
+        <section>
+            <h3>DImensiones necesarias para el analisis cinemático</h3>
+            <p>Para el analisis cinemático necesitamos conocer las dimensiones de los eslabones del robot, para este caso tenemos:</p>
+            <img src="clase4/dimensiones.png" alt="Dimensiones del robot">
+
+        </section>
+    </main>
+
+</body>

@@ -3,55 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso de Navegación Urbana Autónoma</title>
+    <title>Curso Brazo Robótico 3 GDL | ROS 2 + ESP32</title>
+    <meta name="description" content="Curso completo para construir y controlar un brazo robótico de 3 GDL con ESP32, ROS 2 y micro-ROS. 12 clases prácticas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Barra de Navegación -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html">🚗 Curso ROS 2 & Nav</a>
-            </div>
-            <ul class="nav-links">
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-logo-emoji">🤖</span>
+            <span class="brand-name">Brazo <span class="highlight">ROS 2</span></span>
+        </div>
+
+        <button class="nav-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="main-nav">
+            <span class="hamburger"></span>
+        </button>
+
+        <nav class="main-nav" id="main-nav">
+            <ul>
                 <li><a href="index.html" class="active">Inicio</a></li>
-                
-                <!-- Menú desplegable de Clases -->
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Clases ▾</a>
+                    <a href="#" class="dropbtn" aria-haspopup="true">Clases ▾</a>
                     <div class="dropdown-content">
-                        <a href="clases/clase-01.html">Clase 1: Introducción a ROS 2</a>
-                        <a href="clases/clase-02.html">Clase 2: Configuración del entorno</a>
-                        <a href="clases/clase-03.html">Clase 3: Nodos y Tópicos</a>
-                        <a href="clases/clase-04.html">Clase 4: URDF y Modelado</a>
-                        <a href="clases/clase-05.html">Clase 5: Simulación en Gazebo</a>
-                        <a href="clases/clase-06.html">Clase 6: Sensores e IMU</a>
-                        <a href="clases/clase-07.html">Clase 7: Odometría y Cinemática</a>
-                        <a href="clases/clase-08.html">Clase 8: Mapeo (SLAM)</a>
-                        <a href="clases/clase-09.html">Clase 9: Localización (AMCL)</a>
-                        <a href="clases/clase-10.html">Clase 10: Navegación Autónoma (Nav2)</a>
-                        <a href="clases/clase-11.html">Clase 11: Planificación de Conductas</a>
-                        <a href="clases/clase-12.html">Clase 12: Proyecto Final</a>
+                        <!-- Módulo 1 -->
+                        <a href="clases/clase-01.html">Clase 1: Introducción a ROS 2 y Setup</a>
+                        <!-- Módulo 2 -->
+                        <a href="proximamente.html?clase=2">Clase 2: Control de Servomotores en ESP32</a>
+                        <a href="proximamente.html?clase=3">Clase 3: Puente Serial ESP32 ↔ ROS 2 (rclpy)</a>
+                        <!-- Módulo 3 -->
+                        <a href="proximamente.html?clase=4">Clase 4: Cinemática Directa e Inversa (FK/IK)</a>
+                        <a href="proximamente.html?clase=5">Clase 5: URDF del Manipulador R-R-R</a>
+                        <a href="proximamente.html?clase=6">Clase 6: Cinemática Directa en Python + RViz2</a>
+                        <a href="proximamente.html?clase=7">Clase 7: Cinemática Inversa Geométrica en Python</a>
+                        <!-- Módulo 4 -->
+                        <a href="proximamente.html?clase=8">Clase 8: Introducción a micro-ROS y Setup</a>
+                        <a href="proximamente.html?clase=9">Clase 9: Suscripción Nativa a /joint_states</a>
+                        <a href="proximamente.html?clase=10">Clase 10: Red Multidispositivo (2 ESP32)</a>
+                        <!-- Módulo 5 -->
+                        <a href="proximamente.html?clase=11">Clase 11: GUI en Python (Sliders y Pose)</a>
+                        <a href="proximamente.html?clase=12">Clase 12: Misión Final - Pick & Place</a>
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="container">
+    <main>
         <section class="hero">
-            <h1>Bienvenido al Curso ROS2 para brazos roboticos</h1>
-            <p>Aquí encontrarás todo el material, códigos y guías prácticas de las 12 clases del curso.</p>
-            <a href="clases/clase-01.html" class="btn-primary">Empezar la Clase 1</a>
+            <div class="hero-content">
+                <span class="badge">ROS 2 · ESP32 · micro-ROS · RViz2</span>
+                <h1>Construye un Brazo Robótico de 3 GDL</h1>
+                <p>Desde el control básico de servos con ESP32 hasta la cinemática inversa y micro-ROS. 12 clases prácticas para dominar la robótica de manipulación.</p>
+                <div class="hero-actions">
+                    <a href="clases/clase-01.html" class="btn-primary">Empezar Clase 1</a>
+                    <a href="#temario" class="btn-secondary">Ver temario</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Materiales Necesarios -->
+        <section class="materials-section">
+            <div class="materials-container">
+                <h2>🛠️ Materiales Necesarios</h2>
+                <p>Para completar el curso necesitarás los siguientes componentes (basados en el <a href="https://megatronica.cc/producto/kit-brazo-robotico-arduino/" target="_blank" rel="noopener">Kit Brazo Robótico Arduino</a> y el <a href="https://grabcad.com/library/mearm-robotic-arm-1" target="_blank" rel="noopener">modelo CAD MeArm</a>):</p>
+                <div class="materials-grid">
+                    <div class="material-item">
+                        <span class="material-icon">⚙️</span>
+                        <strong>4x</strong>
+                        <span>Servomotores SG90</span>
+                    </div>
+                    <div class="material-item">
+                        <span class="material-icon">📡</span>
+                        <strong>1x</strong>
+                        <span>Sensor Ultrasónico</span>
+                    </div>
+                    <div class="material-item">
+                        <span class="material-icon">💻</span>
+                        <strong>2x</strong>
+                        <span>ESP32</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Temario por Módulos -->
+        <section class="services" id="temario">
+            <h2>Temario del curso</h2>
+
+            <!-- Módulo 1 -->
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-badge">Módulo 1</span>
+                    <h3>Fundamentos de ROS 2 y Visualización</h3>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card available">
+                        <div class="card-icon">🚀</div>
+                        <h3>Clase 1: Introducción a ROS 2 y Setup</h3>
+                        <p><strong>1h</strong> · Introducción a ROS 2 (DDS, nodos), simulador vs visualizador, instalación del entorno y turtlesim teleoperado desde la terminal.</p>
+                        <a href="clases/clase-01.html" class="btn-primary btn-small">Comenzar →</a>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Módulo 2 -->
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-badge">Módulo 2</span>
+                    <h3>Hardware ESP32 + Control de Servos (Joints)</h3>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card locked">
+                        <div class="card-icon">⚙️</div>
+                        <h3>Clase 2: Control de Servomotores en ESP32</h3>
+                        <p><strong>1h</strong> · Programación C++ en ESP32, generación de señales PWM/servos, lectura de sensores por puerto Serial y lectura de sensor ultrasónico/IR.</p>
+                        <a href="proximamente.html?clase=2" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🔗</div>
+                        <h3>Clase 3: Puente Serial ESP32 ↔ ROS 2 (rclpy)</h3>
+                        <p><strong>1h</strong> · Creación de paquete con colcon y rclpy, nodo puente en Python, suscripción a ángulos de articulación en ROS 2 y envío por Serial al ESP32.</p>
+                        <a href="proximamente.html?clase=3" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Módulo 3 -->
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-badge">Módulo 3</span>
+                    <h3>Modelado URDF y Cinemática Directa/Inversa</h3>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card locked">
+                        <div class="card-icon">📐</div>
+                        <h3>Clase 4: Fundamentos Matemáticos: Cinemática Directa e Inversa (FK/IK)</h3>
+                        <p><strong>1h</strong> · Deducción geométrica paso a paso de la cinemática del robot de 3 DOF y obtención de las ecuaciones.</p>
+                        <a href="proximamente.html?clase=4" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🤖</div>
+                        <h3>Clase 5: URDF del Manipulador R-R-R</h3>
+                        <p><strong>1h</strong> · Construcción XML del robot articulado (link y joint tipo revolute), definición de los marcos del brazo y archivos launch.</p>
+                        <a href="proximamente.html?clase=5" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🎯</div>
+                        <h3>Clase 6: Cinemática Directa y joint_state_publisher</h3>
+                        <p><strong>1h</strong> · Nodo en Python que calcula la pose del efector final (X, Y, Z) a partir de los ángulos de las articulaciones. Publicación en el tópico /joint_states y visualización en RViz2.</p>
+                        <a href="proximamente.html?clase=6" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🧮</div>
+                        <h3>Clase 7: Cinemática Inversa (IK) Geométrica en Python</h3>
+                        <p><strong>1h</strong> · Resolución matemática de la IK para un manipulador de 3 DOF. Nodo en Python que recibe un punto objetivo (X, Y, Z) y calcula los ángulos requeridos para las articulaciones.</p>
+                        <a href="proximamente.html?clase=7" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Módulo 4 -->
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-badge">Módulo 4</span>
+                    <h3>Migración a micro-ROS (Nativo en ESP32)</h3>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card locked">
+                        <div class="card-icon">🌐</div>
+                        <h3>Clase 8: Introducción a micro-ROS y Setup</h3>
+                        <p><strong>1h</strong> · Arquitectura Cliente/Agente (micro-ros-agent). Configuración del agente en la laptop y el nodo en ESP32.</p>
+                        <a href="proximamente.html?clase=8" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">📡</div>
+                        <h3>Clase 9: Suscripción Nativa a /joint_states</h3>
+                        <p><strong>1h</strong> · Eliminación de pyserial. El ESP32 se suscribe directamente a los tópicos de ROS 2 vía Serial o Wi-Fi UDP.</p>
+                        <a href="proximamente.html?clase=9" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🔗</div>
+                        <h3>Clase 10: Red Multidispositivo: 2 ESP32 en ROS 2</h3>
+                        <p><strong>1h</strong> · ESP32 #1 (Servos) se suscribe a /joint_states. ESP32 #2 (Sensor Ultrasónico) publica la distancia vía Wi-Fi (UDP). Demostración del grafo de ROS 2 uniendo dos microcontroladores en red.</p>
+                        <a href="proximamente.html?clase=10" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Módulo 5 -->
+            <div class="module-group">
+                <div class="module-header">
+                    <span class="module-badge">Módulo 5</span>
+                    <h3>Integración y Panel de Control GUI</h3>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card locked">
+                        <div class="card-icon">🖥️</div>
+                        <h3>Clase 11: GUI en Python (Sliders de Articulación y Pose)</h3>
+                        <p><strong>1h</strong> · Creación de una interfaz gráfica (CustomTkinter) con sliders para mover individualmente las articulaciones o ingresar coordenadas (X, Y, Z) de la pinza.</p>
+                        <a href="proximamente.html?clase=11" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                    <article class="service-card locked">
+                        <div class="card-icon">🏆</div>
+                        <h3>Clase 12: Misión Final: Secuencia Pick & Place</h3>
+                        <p><strong>1h</strong> · Ejecución de una rutina automática de Pick & Place simulada en RViz2 y ejecutada sincrónicamente en los servomotores físicos del ESP32.</p>
+                        <a href="proximamente.html?clase=12" class="btn-secondary btn-small">Próximamente 🔒</a>
+                    </article>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; 2026 - Proyecto de Robótica Autónoma</p>
+    <footer class="site-footer">
+        <p>&copy; 2026 · Curso Brazo Robótico 3 GDL · ROS 2 Humble + ESP32</p>
     </footer>
 
+    <script src="menu.js"></script>
 </body>
 </html>

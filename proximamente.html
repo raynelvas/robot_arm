@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximamente | Curso ROS 2</title>
+    <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-logo-emoji">🚗</span>
+            <span class="brand-name">Curso <span class="highlight">ROS 2</span></span>
+        </div>
+
+        <button class="nav-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="main-nav">
+            <span class="hamburger"></span>
+        </button>
+
+        <nav class="main-nav" id="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Clases ▾</a>
+                    <div class="dropdown-content">
+                        <a href="clases/clase-01.html">Clase 1: Introducción a ROS 2</a>
+                        <a href="proximamente.html?clase=2">Clase 2: Configuración del entorno</a>
+                        <a href="proximamente.html?clase=3">Clase 3: Nodos y Tópicos</a>
+                        <a href="proximamente.html?clase=4">Clase 4: URDF y Modelado</a>
+                        <a href="proximamente.html?clase=5">Clase 5: Simulación en Gazebo</a>
+                        <a href="proximamente.html?clase=6">Clase 6: Sensores e IMU</a>
+                        <a href="proximamente.html?clase=7">Clase 7: Odometría y Cinemática</a>
+                        <a href="proximamente.html?clase=8">Clase 8: Mapeo (SLAM)</a>
+                        <a href="proximamente.html?clase=9">Clase 9: Localización (AMCL)</a>
+                        <a href="proximamente.html?clase=10">Clase 10: Navegación Autónoma (Nav2)</a>
+                        <a href="proximamente.html?clase=11">Clase 11: Planificación de Conductas</a>
+                        <a href="proximamente.html?clase=12">Clase 12: Proyecto Final</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="coming-soon-section">
+            <div class="coming-soon-content">
+                <div class="coming-icon">🔒</div>
+                <span class="badge">En preparación</span>
+                <h1 id="coming-title">Próximamente</h1>
+                <p id="coming-description">
+                    Esta clase estará disponible muy pronto. Estamos preparando el mejor material para ti.
+                </p>
+
+                <div class="progress-block">
+                    <div class="progress-label">
+                        <span>Progreso del curso</span>
+                        <span id="progress-text">1 / 12 clases disponibles</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 8.33%;"></div>
+                    </div>
+                </div>
+
+                <div class="hero-actions" style="margin-top: 2.5rem;">
+                    <a href="clases/clase-01.html" class="btn-primary">Ir a la Clase 1</a>
+                    <a href="index.html" class="btn-secondary">Volver al inicio</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 · Curso de Robótica Autónoma · Hecho con ROS 2 Humble</p>
+    </footer>
+
+    <script src="menu.js"></script>
+
+    <!-- Script para personalizar según la clase solicitada -->
+    <script>
+        (function () {
+            // Títulos actualizados según el PDF del curso
+            const titulos = {
+                1: 'Introducción a ROS 2 y Setup',
+                2: 'Control de Servomotores en ESP32',
+                3: 'Puente Serial ESP32 ↔ ROS 2 (rclpy)',
+                4: 'Cinemática Directa e Inversa (FK/IK)',
+                5: 'URDF del Manipulador R-R-R',
+                6: 'Cinemática Directa + joint_state_publisher',
+                7: 'Cinemática Inversa (IK) Geométrica en Python',
+                8: 'Introducción a micro-ROS y Setup',
+                9: 'Suscripción Nativa a /joint_states',
+                10: 'Red Multidispositivo: 2 ESP32 en ROS 2',
+                11: 'GUI en Python (Sliders y Pose)',
+                12: 'Misión Final: Pick & Place'
+            };
+
+            const params = new URLSearchParams(window.location.search);
+            const num = parseInt(params.get('clase'), 10);
+
+            if (num && titulos[num]) {
+                document.getElementById('coming-title').textContent = 'Clase ' + num + ': ' + titulos[num];
+                document.getElementById('coming-description').textContent =
+                    'La Clase ' + num + ' está en preparación. Muy pronto tendrás acceso a este módulo del curso.';
+                document.title = 'Clase ' + num + ' (Próximamente) | Curso Brazo Robótico ROS 2';
+            }
+
+            const disponibles = 1; // 👈 Cambia a 2, 3, etc. cuando desbloquees nuevas clases
+            const total = 12;
+            const pct = (disponibles / total * 100).toFixed(2);
+            document.querySelector('.progress-fill').style.width = pct + '%';
+            document.getElementById('progress-text').textContent =
+                disponibles + ' / ' + total + ' clases disponibles';
+        })();
+    </script>
+
+</body>
+</html>
