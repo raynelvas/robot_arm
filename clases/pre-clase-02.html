@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Clase 2: Ensamblaje del Brazo MeArm | Curso ROS 2</title>
+    <meta name="description" content="Guía paso a paso para ensamblar el brazo robótico MeArm con servos SG90 y calibrar los servomotores con ESP32 antes de la Clase 2.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="brand">
+            <span class="brand-logo-emoji">🤖</span>
+            <span class="brand-name">Brazo <span class="highlight">ROS 2</span></span>
+        </div>
+
+        <button class="nav-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="main-nav">
+            <span class="hamburger"></span>
+        </button>
+
+        <nav class="main-nav" id="main-nav">
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Clases ▾</a>
+                    <div class="dropdown-content">
+                        <a href="clase-01.html">Clase 1: Introducción a ROS 2 y Setup</a>
+                        <a href="pre-clase-02.html" class="active">Pre-Clase 2: Ensamblaje del Brazo MeArm</a>
+                        <a href="../proximamente.html?clase=2">Clase 2: Control de Servomotores en ESP32</a>
+                        <a href="../proximamente.html?clase=3">Clase 3: Puente Serial ESP32 ↔ ROS 2 (rclpy)</a>
+                        <a href="../proximamente.html?clase=4">Clase 4: Cinemática Directa e Inversa (FK/IK)</a>
+                        <a href="../proximamente.html?clase=5">Clase 5: URDF del Manipulador R-R-R</a>
+                        <a href="../proximamente.html?clase=6">Clase 6: Cinemática Directa + joint_state_publisher</a>
+                        <a href="../proximamente.html?clase=7">Clase 7: Cinemática Inversa (IK) Geométrica</a>
+                        <a href="../proximamente.html?clase=8">Clase 8: Introducción a micro-ROS y Setup</a>
+                        <a href="../proximamente.html?clase=9">Clase 9: Suscripción Nativa a /joint_states</a>
+                        <a href="../proximamente.html?clase=10">Clase 10: Red Multidispositivo (2 ESP32)</a>
+                        <a href="../proximamente.html?clase=11">Clase 11: GUI en Python (Sliders y Pose)</a>
+                        <a href="../proximamente.html?clase=12">Clase 12: Misión Final - Pick & Place</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="class-hero">
+            <div class="class-hero-content">
+                <a href="../index.html" class="btn-back">← Volver al inicio</a>
+                <span class="badge">Pre-Clase · Ensamblaje</span>
+                <h1>Ensamblaje del Brazo MeArm</h1>
+                <p>Antes de la Clase 2 debes tener tu brazo robótico físico armado y con los servos calibrados a 90°. Sigue esta guía paso a paso.</p>
+            </div>
+        </section>
+
+        <article class="container class-content">
+
+            <!-- Introducción / Enlaces de referencia -->
+            <section>
+                <h2>Introducción</h2>
+                <p>
+                    Esta guía te permitirá ensamblar el brazo robótico <strong>MeArm</strong> antes de la Clase 2. 
+                    Los ensamblajes pueden tener ligeras variaciones según el kit o el modelo 3D que tengas disponible, así que 
+                    <strong>tómate tu tiempo</strong> y verifica las piezas antes de atornillar.
+                </p>
+
+                <div class="warning-box">
+                    <strong>⚠️ Nota importante:</strong>
+                    Puedes tomar como referencia los siguientes enlaces, pero ciertas piezas pueden diferir del modelo que tienes disponible.
+                </div>
+
+                <h3>Referencias externas</h3>
+                <ul>
+                    <li>
+                        <a href="https://loginov-rocks.medium.com/build-4-dof-robot-arm-under-10-mearm-a69ae297b354" target="_blank" rel="noopener">
+                            Build 4-DOF Robot Arm Under $10 — MeArm (Medium)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://learn.mearm.com/assets/docs/building-the-mearm-v1/MeArm_v1.0_Manual_v1.3.pdf" target="_blank" rel="noopener">
+                            Manual oficial MeArm v1.0 (PDF)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://youtu.be/zFBsEE7_NbQ" target="_blank" rel="noopener">
+                            Video de ensamblaje (YouTube)
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>📌 Recuerda:</strong>
+                    Las imágenes de esta guía son de referencia. Si las piezas de tu kit difieren, prioriza la lógica del 
+                    montaje (base → hombro → codo → efector final) antes que la coincidencia exacta con las fotos.
+                </div>
+            </section>
+
+            <!-- Paso 1: Calibración de servos -->
+            <section>
+                <h2>Paso 1: Colocar los 4 servos en posición de 90°</h2>
+                <p>
+                    Antes de ensamblar, <strong>todos los servos deben estar calibrados a 90°</strong> (posición central). 
+                    Esto es crítico porque las piezas se atornillan al servo asumiendo esa posición. Si no lo haces, 
+                    el brazo quedará desalineado desde el inicio.
+                </p>
+
+                <h3>Código de calibración (ESP32)</h3>
+                <p>Sube el siguiente código a tu ESP32 con el servo conectado al <code>GPIO 18</code>. El servo se moverá a 0°, 90° y 180° para que verifiques su rango de movimiento.</p>
+
+                <div class="terminal-block">
+                    <span class="comment">// Requiere la librería ESP32Servo</span><br>
+                    <code>#include &lt;ESP32Servo.h&gt;</code><br><br>
+                    <code>Servo miServo;</code> <span class="comment">// Crear el objeto para controlar el servo</span><br><br>
+                    <span class="comment">// Definir el pin GPIO al que está conectado el cable de señal del servo</span><br>
+                    <code>const int pinServo = 18;</code><br><br>
+                    <code>void setup() {</code><br>
+                    &nbsp;&nbsp;<code>Serial.begin(115200);</code><br>
+                    &nbsp;&nbsp;<code>delay(1000);</code> <span class="comment">// Pequeña pausa para que abra el puerto serie</span><br><br>
+                    &nbsp;&nbsp;<span class="comment">// Adjuntar el servo al pin</span><br>
+                    &nbsp;&nbsp;<code>miServo.attach(pinServo);</code><br>
+                    <code>}</code><br><br>
+                    <code>void loop() {</code><br>
+                    &nbsp;&nbsp;<span class="comment">// Posición 0 grados</span><br>
+                    &nbsp;&nbsp;<code>Serial.println("Moviendo a: 0 grados");</code><br>
+                    &nbsp;&nbsp;<code>miServo.write(0);</code><br>
+                    &nbsp;&nbsp;<code>delay(3000);</code> <span class="comment">// 3 segundos para observar el cero</span><br><br>
+                    &nbsp;&nbsp;<span class="comment">// Posición 90 grados (centro)</span><br>
+                    &nbsp;&nbsp;<code>Serial.println("Moviendo a: 90 grados");</code><br>
+                    &nbsp;&nbsp;<code>miServo.write(90);</code><br>
+                    &nbsp;&nbsp;<code>delay(3000);</code> <span class="comment">// 3 segundos para observar el centro</span><br><br>
+                    &nbsp;&nbsp;<span class="comment">// Posición 180 grados</span><br>
+                    &nbsp;&nbsp;<code>Serial.println("Moviendo a: 180 grados");</code><br>
+                    &nbsp;&nbsp;<code>miServo.write(180);</code><br>
+                    &nbsp;&nbsp;<code>delay(3000);</code> <span class="comment">// 3 segundos para observar el extremo opuesto</span><br>
+                    <code>}</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Tips:</strong>
+                    <ul style="margin: 0.5rem 0 0 0;">
+                        <li>Repite este paso <strong>con cada uno de los 4 servos</strong> antes de ensamblarlos.</li>
+                        <li>Después de calibrar, <strong>marca con un plumón</strong> la posición de 90° en el eje del servo.</li>
+                        <li>Desconecta los servos antes de atornillar para evitar movimientos involuntarios.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Pasos de ensamblaje -->
+            <section>
+                <h2>Pasos de ensamblaje</h2>
+
+                <!-- Paso 2 -->
+                <div class="assembly-step">
+                    <h3>Paso 2: Sujeción del servo de la base</h3>
+                    <p>Arma la sujeción del servo que irá en la base del robot.</p>
+                    <figure>
+                        <img src="ensamblaje/p1.jpeg" alt="Sujeción del servo de la base">
+                    </figure>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="assembly-step">
+                    <h3>Paso 3: Pernos y tuercas en la base acrílica</h3>
+                    <p>Coloca los pernos y tuercas en la base acrílica del robot.</p>
+                    <figure>
+                        <img src="ensamblaje/p2.jpeg" alt="Pernos y tuercas en la base acrílica">
+                    </figure>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="assembly-step">
+                    <h3>Paso 4: Sujetar el servo a la base</h3>
+                    <p>Coloca el servo sujetado en el paso 2 sobre la base acrílica con los pernos del paso 3.</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p3_v1.jpeg" alt="Vista 1 de la base ensamblada"></figure>
+                        <figure><img src="ensamblaje/p3_v2.jpeg" alt="Vista 2 de la base ensamblada"></figure>
+                        <figure><img src="ensamblaje/p3_ref.webp" alt="Referencia de la base ensamblada"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="assembly-step">
+                    <h3>Paso 5: Servo horn + base giratoria</h3>
+                    <p>Arma el servo horn con la base giratoria donde se asentará el robot.</p>
+                    <figure>
+                        <img src="ensamblaje/p4.jpeg" alt="Servo horn con base giratoria">
+                    </figure>
+                </div>
+
+                <!-- Paso 6 -->
+                <div class="assembly-step">
+                    <h3>Paso 6: Ajustar pieza al servo (en 90°)</h3>
+                    <p>
+                        Ajusta la pieza del paso 5 al servo. <strong>El servo debe estar en 90°</strong>. 
+                        Si no calza bien, repite este paso girando la pieza giratoria.
+                    </p>
+                    <figure>
+                        <img src="ensamblaje/p5.jpeg" alt="Pieza ajustada al servo en 90°">
+                    </figure>
+                </div>
+
+                <!-- Paso 7 -->
+                <div class="assembly-step">
+                    <h3>Paso 7: Guía intermedia del brazo</h3>
+                    <p>Coloca la guía intermedia del brazo y únela al paso 6.</p>
+                    <figure>
+                        <img src="ensamblaje/p6.jpeg" alt="Guía intermedia del brazo">
+                    </figure>
+                </div>
+
+                <!-- Paso 8 -->
+                <div class="assembly-step">
+                    <h3>Paso 8: Sujeción del hombro</h3>
+                    <p>Arma la sujeción del hombro del brazo y colócala en la posición indicada.</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p7_v1.jpeg" alt="Sujeción del hombro - vista 1"></figure>
+                        <figure><img src="ensamblaje/p7_v2.jpeg" alt="Sujeción del hombro - vista 2"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 9 -->
+                <div class="assembly-step">
+                    <h3>Paso 9: Unir piezas de los pasos 7 y 8</h3>
+                    <p>
+                        Junta la pieza del paso 8 y el paso 7. <strong>Debe calzar sin realizar esfuerzo</strong>. 
+                        Caso contrario, repite el paso 6 girando la pieza giratoria.
+                    </p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p8_v1.jpeg" alt="Unión hombro-guía - vista 1"></figure>
+                        <figure><img src="ensamblaje/p8_v2.jpeg" alt="Unión hombro-guía - vista 2"></figure>
+                        <figure><img src="ensamblaje/p8_ref.webp" alt="Referencia de la unión"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 10 -->
+                <div class="assembly-step">
+                    <h3>Paso 10: Servo del codo</h3>
+                    <p>Arma el servo del codo del robot.</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p9_v1.jpeg" alt="Servo del codo - vista 1"></figure>
+                        <figure><img src="ensamblaje/p9_v2.jpeg" alt="Servo del codo - vista 2"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 11 -->
+                <div class="assembly-step">
+                    <h3>Paso 11: Unir servo del codo al brazo</h3>
+                    <p>Junta la pieza del paso 10 a la estructura del brazo robótico del paso 9.</p>
+                    <figure>
+                        <img src="ensamblaje/p10.jpeg" alt="Servo del codo unido al brazo">
+                    </figure>
+                </div>
+
+                <!-- Paso 12 -->
+                <div class="assembly-step">
+                    <h3>Paso 12: Mecanismo del codo</h3>
+                    <p>Arma el mecanismo del codo del robot.</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p11_v1.jpeg" alt="Mecanismo del codo - vista 1"></figure>
+                        <figure><img src="ensamblaje/p11_v2.jpeg" alt="Mecanismo del codo - vista 2"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 13 -->
+                <div class="assembly-step">
+                    <h3>Paso 13: Mecanismo para el efector final</h3>
+                    <p>
+                        Arma el mecanismo para sujetar el efector final. Este termina de dar apoyo al codo 
+                        del robot pero empieza el mecanismo por el brazo del robot.
+                    </p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p12.jpeg" alt="Mecanismo del efector final"></figure>
+                        <figure><img src="ensamblaje/p12_ref.webp" alt="Referencia del mecanismo"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 14 -->
+                <div class="assembly-step">
+                    <h3>Paso 14: Efector final (pinza)</h3>
+                    <p>Arma el efector final (pinza del brazo).</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p13_v1.jpeg" alt="Efector final - vista 1"></figure>
+                        <figure><img src="ensamblaje/p13_v2.jpeg" alt="Efector final - vista 2"></figure>
+                        <figure><img src="ensamblaje/p13_v3.jpeg" alt="Efector final - vista 3"></figure>
+                        <figure><img src="ensamblaje/p13_ref.png" alt="Referencia del efector final"></figure>
+                    </div>
+                </div>
+
+                <!-- Paso 15 -->
+                <div class="assembly-step">
+                    <h3>Paso 15: Unir efector final al brazo</h3>
+                    <p>Junta el efector final con el brazo robótico completo.</p>
+                    <div class="image-grid">
+                        <figure><img src="ensamblaje/p14_v1.jpeg" alt="Brazo completo - vista 1"></figure>
+                        <figure><img src="ensamblaje/p14_v2.jpeg" alt="Brazo completo - vista 2"></figure>
+                        <figure><img src="ensamblaje/p14_ref.webp" alt="Referencia final del brazo"></figure>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Checklist final -->
+            <section>
+                <h2>✅ Checklist antes de la Clase 2</h2>
+                <ul class="checklist">
+                    <li>Los 4 servos fueron calibrados a 90° antes de ensamblar.</li>
+                    <li>El brazo se mueve libremente sin forzar ninguna articulación.</li>
+                    <li>Todas las piezas quedaron firmes (sin tornillos flojos).</li>
+                    <li>Los cables de los servos no están pellizcados por las piezas.</li>
+                    <li>La base está estable y no se vuelca al mover el brazo.</li>
+                    <li>Tienes identificados los GPIOs de cada servo (base, hombro, codo, pinza).</li>
+                </ul>
+            </section>
+
+            <!-- Navegación -->
+            <nav class="class-navigation">
+                <a href="clase-01.html" class="btn-secondary">← Clase 1</a>
+                <a href="../proximamente.html?clase=2" class="btn-secondary">Siguiente: Clase 2 🔒</a>
+            </nav>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 · Curso Brazo Robótico 3 GDL · ROS 2 Humble + ESP32</p>
+    </footer>
+
+    <script src="../menu.js"></script>
+</body>
+</html>

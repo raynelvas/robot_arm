@@ -29,6 +29,7 @@
                     <a href="#" class="dropbtn">Clases ▾</a>
                     <div class="dropdown-content">
                         <a href="clases/clase-01.html">Clase 1: Introducción a ROS 2</a>
+                        <a href="clases/pre-clase-02.html">Pre-Clase 2: Ensamblaje del Brazo MeArm</a> 
                         <a href="proximamente.html?clase=2">Clase 2: Configuración del entorno</a>
                         <a href="proximamente.html?clase=3">Clase 3: Nodos y Tópicos</a>
                         <a href="proximamente.html?clase=4">Clase 4: URDF y Modelado</a>
@@ -67,7 +68,7 @@
                 </div>
 
                 <div class="hero-actions" style="margin-top: 2.5rem;">
-                    <a href="clases/clase-01.html" class="btn-primary">Ir a la Clase 1</a>
+                    <a href="clases/pre-clase-02.html" class="btn-primary">Ir a la Pre-Clase 2</a>
                     <a href="index.html" class="btn-secondary">Volver al inicio</a>
                 </div>
             </div>
@@ -109,7 +110,7 @@
                 document.title = 'Clase ' + num + ' (Próximamente) | Curso Brazo Robótico ROS 2';
             }
 
-            const disponibles = 1; // 👈 Cambia a 2, 3, etc. cuando desbloquees nuevas clases
+            const disponibles = 1.5; // 👈 Cambia a 2, 3, etc. cuando desbloquees nuevas clases
             const total = 12;
             const pct = (disponibles / total * 100).toFixed(2);
             document.querySelector('.progress-fill').style.width = pct + '%';
